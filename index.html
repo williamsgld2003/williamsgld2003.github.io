@@ -1,84 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gabriel Williams | Photography</title>
-    <meta name="description" content="Minimalist photography portfolio showcasing documentary and landscape work.">
-    <meta name="keywords" content="photography, portfolio, minimalist, fine art, landscape, documentary">
-    
-    <!-- React & ReactDOM -->
-    <script src="https://resource.trickle.so/vendor_lib/unpkg/react@18/umd/react.production.min.js"></script>
-    <script src="https://resource.trickle.so/vendor_lib/unpkg/react-dom@18/umd/react-dom.production.min.js"></script>
-    
-    <!-- Babel -->
-    <script src="https://resource.trickle.so/vendor_lib/unpkg/@babel/standalone/babel.min.js"></script>
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Lucide Icons -->
-    <link href="https://resource.trickle.so/vendor_lib/unpkg/lucide-static@0.516.0/font/lucide.css" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <style type="text/tailwindcss">
-    @layer theme {
-        :root {
-            --bg-color: #fdfbf7; /* Warm white/paper tone */
-            --text-color: #1a1a1a;
-            --muted-color: #737373;
-        }
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            font-family: 'Times New Roman', Times, serif; /* Classic Serif for main text */
-        }
-        .font-sans-utility {
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            letter-spacing: 0.05em;
-        }
-    }
+<title>Gabriel Williams | Photography</title>
 
-    @layer components {
-        .nav-link {
-            @apply text-sm text-[var(--muted-color)] hover:text-[var(--text-color)] transition-colors duration-300 font-sans-utility uppercase cursor-pointer;
-        }
-        .nav-link.active {
-            @apply text-[var(--text-color)] border-b border-[var(--text-color)];
-        }
-        .fade-in {
-            animation: fadeIn 0.8s ease-in-out forwards;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    }
-    
-    /* Custom Scrollbar for a cleaner look */
-    ::-webkit-scrollbar {
-        width: 8px;
-    }
-    ::-webkit-scrollbar-track {
-        background: transparent;
-    }
-    ::-webkit-scrollbar-thumb {
-        background: #ddd;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-        background: #bbb;
-    }
-    </style>
+<style>
+
+body{
+margin:0;
+font-family: "Times New Roman", serif;
+background:#fdfbf7;
+color:#111;
+}
+
+header{
+padding:40px;
+text-align:center;
+}
+
+header h1{
+font-weight:normal;
+letter-spacing:2px;
+}
+
+nav{
+margin-top:10px;
+}
+
+nav a{
+margin:0 15px;
+text-decoration:none;
+color:#444;
+font-size:14px;
+letter-spacing:1px;
+}
+
+nav a:hover{
+color:black;
+}
+
+.gallery{
+max-width:1100px;
+margin:auto;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:20px;
+padding:40px;
+}
+
+.gallery img{
+width:100%;
+height:auto;
+display:block;
+}
+
+.about{
+max-width:700px;
+margin:80px auto;
+padding:0 20px;
+line-height:1.6;
+font-size:17px;
+}
+
+footer{
+text-align:center;
+padding:40px;
+font-size:14px;
+color:#666;
+}
+
+</style>
 </head>
+
 <body>
-    <div id="root"></div>
-    
-    <!-- Scripts -->
-    <script type="text/babel" src="data/photos.js"></script>
-    <script type="text/babel" src="components/Header.js"></script>
-    <script type="text/babel" src="components/Gallery.js"></script>
-    <script type="text/babel" src="components/About.js"></script>
-    <script type="text/babel" src="components/Contact.js"></script>
-    <script type="text/babel" src="app.js"></script>
+
+<header>
+
+<h1>Gabriel Williams</h1>
+
+<nav>
+<a href="#work">Work</a>
+<a href="#about">About</a>
+<a href="#contact">Contact</a>
+</nav>
+
+</header>
+
+<section id="work" class="gallery">
+
+<img src="images/photo1.jpg">
+<img src="images/photo2.jpg">
+<img src="images/photo3.jpg">
+<img src="images/photo4.jpg">
+<img src="images/photo5.jpg">
+<img src="images/photo6.jpg">
+
+</section>
+
+<section id="about" class="about">
+
+<p>
+Gabriel Williams is a photographer working primarily with large-format film.
+His work explores landscape, memory, and ancestry through quiet observational images.
+Recent projects investigate monumental trees and personal histories across England and America.
+</p>
+
+</section>
+
+<section id="contact" class="about">
+
+<p>
+Email: your@email.com
+</p>
+
+<p>
+Instagram: @yourname
+</p>
+
+</section>
+
+<footer>
+
+© Gabriel Williams
+
+</footer>
+
 </body>
 </html>
