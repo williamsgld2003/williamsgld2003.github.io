@@ -1,0 +1,4 @@
+{
+    "url": "https://unsplash.com",
+    "description": "Used various Unsplash images for the photography portfolio mock data (Morning Mist, Forest Edge, etc). Images are sourced directly via URL in data/photos.js"
+}
