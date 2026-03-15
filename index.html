@@ -1,18 +1,84 @@
-# Minimalist Photography Portfolio
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gabriel Williams | Photography</title>
+    <meta name="description" content="Minimalist photography portfolio showcasing documentary and landscape work.">
+    <meta name="keywords" content="photography, portfolio, minimalist, fine art, landscape, documentary">
+    
+    <!-- React & ReactDOM -->
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/react@18/umd/react.production.min.js"></script>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Babel -->
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <link href="https://resource.trickle.so/vendor_lib/unpkg/lucide-static@0.516.0/font/lucide.css" rel="stylesheet">
 
-This is a minimalist photography portfolio website built with React and Tailwind CSS. The design is inspired by the styles of Bryan Schutmaat and Matthew Genitempo, focusing on:
-- Clean, serif typography
-- Abundant whitespace
-- Vertical flow gallery
-- Minimal UI distractions
+    <style type="text/tailwindcss">
+    @layer theme {
+        :root {
+            --bg-color: #fdfbf7; /* Warm white/paper tone */
+            --text-color: #1a1a1a;
+            --muted-color: #737373;
+        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Times New Roman', Times, serif; /* Classic Serif for main text */
+        }
+        .font-sans-utility {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            letter-spacing: 0.05em;
+        }
+    }
 
-## Project Structure
-- `index.html`: Main entry point with Tailwind configuration.
-- `app.js`: Main application logic and routing state.
-- `components/`: UI components (Header, Gallery, About, Contact).
-- `data/`: Portfolio images data (currently using user-uploaded assets).
-
-## Maintenance
-- When adding new images, update `data/photos.js`.
-- If new external resources are used, update `trickle/assets/`.
-- Keep this README updated if the project structure changes significantly.
+    @layer components {
+        .nav-link {
+            @apply text-sm text-[var(--muted-color)] hover:text-[var(--text-color)] transition-colors duration-300 font-sans-utility uppercase cursor-pointer;
+        }
+        .nav-link.active {
+            @apply text-[var(--text-color)] border-b border-[var(--text-color)];
+        }
+        .fade-in {
+            animation: fadeIn 0.8s ease-in-out forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    }
+    
+    /* Custom Scrollbar for a cleaner look */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #ddd;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #bbb;
+    }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <!-- Scripts -->
+    <script type="text/babel" src="data/photos.js"></script>
+    <script type="text/babel" src="components/Header.js"></script>
+    <script type="text/babel" src="components/Gallery.js"></script>
+    <script type="text/babel" src="components/About.js"></script>
+    <script type="text/babel" src="components/Contact.js"></script>
+    <script type="text/babel" src="app.js"></script>
+</body>
+</html>
