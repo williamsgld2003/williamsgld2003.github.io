@@ -1,0 +1,19 @@
+# Minimalist Photography Portfolio
+
+This is a minimalist photography portfolio website built with React and Tailwind CSS. The design is inspired by the styles of Bryan Schutmaat and Matthew Genitempo, focusing on:
+- Clean, serif typography
+- Abundant whitespace
+- Vertical flow gallery
+- Minimal UI distractions
+
+## Project Structure
+- `index.html`: Main entry point with Tailwind configuration.
+- `app.js`: Main application logic and routing state.
+- `components/`: UI components (Header, Gallery, About, Contact).
+- `data/`: Portfolio images data (currently using user-uploaded assets).
+- `export.html`: A bundled, single-file version of the site suitable for downloading and running offline or on GitHub Pages.
+
+## Maintenance
+- When adding new images, update `data/photos.js`.
+- If new external resources are used, update `trickle/assets/`.
+- Keep this README updated if the project structure changes significantly.

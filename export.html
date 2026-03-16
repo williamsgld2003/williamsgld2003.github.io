@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gabriel Williams | Photography</title>
+    <meta name="description" content="Minimalist photography portfolio showcasing documentary and landscape work.">
+    <meta name="keywords" content="photography, portfolio, minimalist, fine art, landscape, documentary">
+    
+    <!-- React & ReactDOM -->
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/react@18/umd/react.production.min.js"></script>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/react-dom@18/umd/react-dom.production.min.js"></script>
+    
+    <!-- Babel -->
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <link href="https://resource.trickle.so/vendor_lib/unpkg/lucide-static@0.516.0/font/lucide.css" rel="stylesheet">
+
+    <style type="text/tailwindcss">
+    @layer theme {
+        :root {
+            --bg-color: #fdfbf7; /* Warm white/paper tone */
+            --text-color: #1a1a1a;
+            --muted-color: #737373;
+        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Times New Roman', Times, serif; /* Classic Serif for main text */
+        }
+        .font-sans-utility {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            letter-spacing: 0.05em;
+        }
+    }
+
+    @layer components {
+        .nav-link {
+            @apply text-sm text-[var(--muted-color)] hover:text-[var(--text-color)] transition-colors duration-300 font-sans-utility uppercase cursor-pointer;
+        }
+        .nav-link.active {
+            @apply text-[var(--text-color)] border-b border-[var(--text-color)];
+        }
+        .fade-in {
+            animation: fadeIn 0.8s ease-in-out forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    }
+    
+    /* Custom Scrollbar for a cleaner look */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #ddd;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #bbb;
+    }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <!-- Data -->
+    <script type="text/babel">
+        const PORTFOLIO_DATA = [
+            {
+                id: 1,
+                url: "https://app.trickle.so/storage/public/images/usr_1cb8c89340000001/28455834-ab1e-4f61-9149-afc6da6484d4.jpeg",
+                title: "Portfolio Image 1",
+                year: "2026",
+                orientation: "portrait"
+            },
+            {
+                id: 2,
+                url: "https://app.trickle.so/storage/public/images/usr_1cb8c89340000001/d351b580-4af6-4fe5-a031-fd2d741b4c76.jpeg",
+                title: "Portfolio Image 2",
+                year: "2026",
+                orientation: "portrait"
+            }
+        ];
+    </script>
+
+    <!-- Components -->
+    <script type="text/babel">
+        function Header({ currentView, setView, isInfoOpen, setIsInfoOpen }) {
+            const handleViewChange = (view) => {
+                setView(view);
+                setIsInfoOpen(false); // Close overlay when changing main views
+            };
+
+            return (
+                <header className="fixed top-0 left-0 w-full md:w-64 h-auto md:h-screen p-6 md:p-12 flex flex-col justify-start z-40 bg-[var(--bg-color)] md:bg-transparent" data-name="sidebar">
+                    <div className="mb-6 md:mb-12">
+                        <h1 className="text-xs tracking-[0.2em] leading-relaxed uppercase font-sans-utility font-normal text-gray-900">
+                            <a 
+                                href="#"
+                                onClick={(e) => { e.preventDefault(); handleViewChange('work'); }}
+                                className="block hover:text-[var(--muted-color)] transition-colors duration-300"
+                            >
+                                <span className="block">Gabriel</span>
+                                <span className="block">Williams</span>
+                            </a>
+                        </h1>
+                    </div>
+                    
+                    <nav className="flex flex-col gap-2">
+                        <span 
+                            className={`text-[10px] text-gray-500 hover:text-gray-900 cursor-pointer transition-colors duration-200 font-sans-utility font-light ${currentView === 'untitled' && !isInfoOpen ? 'text-gray-900' : ''}`}
+                            onClick={() => handleViewChange('untitled')}
+                        >
+                            Untitled
+                        </span>
+                        <span 
+                            className={`text-[10px] text-gray-500 hover:text-gray-900 cursor-pointer transition-colors duration-200 font-sans-utility font-light ${isInfoOpen ? 'text-gray-900' : ''}`}
+                            onClick={() => setIsInfoOpen(true)}
+                        >
+                            About
+                        </span>
+                        <span 
+                            className={`text-[10px] text-gray-500 hover:text-gray-900 cursor-pointer transition-colors duration-200 font-sans-utility font-light ${currentView === 'contact' && !isInfoOpen ? 'text-gray-900' : ''}`}
+                            onClick={() => handleViewChange('contact')}
+                        >
+                            Contact
+                        </span>
+                    </nav>
+                </header>
+            );
+        }
+
+        function Gallery() {
+            try {
+                const [currentIndex, setCurrentIndex] = React.useState(0);
+                const [isVisible, setIsVisible] = React.useState(true);
+
+                React.useEffect(() => {
+                    const intervalId = setInterval(() => {
+                        // Start fade out
+                        setIsVisible(false);
+                        
+                        // Wait for fade out, then swap image and fade in
+                        setTimeout(() => {
+                            setCurrentIndex((prevIndex) => (prevIndex + 1) % PORTFOLIO_DATA.length);
+                            setIsVisible(true);
+                        }, 800); // Match this with the CSS transition duration
+                        
+                    }, 6000); // Change image every 6 seconds
+
+                    return () => clearInterval(intervalId);
+                }, []);
+
+                const currentPhoto = PORTFOLIO_DATA[currentIndex];
+
+                return (
+                    <section className="w-full h-screen flex flex-col justify-center items-center px-6 md:px-12 fade-in" data-name="gallery">
+                        <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
+                            <img 
+                                src={currentPhoto.url} 
+                                alt="Portfolio Slide"
+                                className={`max-h-[85vh] max-w-full object-contain grayscale transition-opacity duration-[800ms] ease-in-out ${isVisible ? 'opacity-100' : 'opacity-0'}`}
+                            />
+                        </div>
+                    </section>
+                );
+            } catch (error) {
+                console.error('Gallery component error:', error);
+                return <div className="p-12">Error loading gallery.</div>;
+            }
+        }
+
+        function Untitled() {
+            const images = [
+                {
+                    url: "https://app.trickle.so/storage/public/images/usr_1cb8c89340000001/0eaeeb79-4966-4552-85f6-fcac2ac04423.jpeg",
+                    title: "Untitled 2",
+                    className: "w-[60%] ml-auto",
+                },
+                {
+                    url: "https://app.trickle.so/storage/public/images/usr_1cb8c89340000001/f4ec14e6-c8ff-43d5-a59b-714b596b631f.jpeg",
+                    title: "Untitled 1",
+                    className: "w-[70%] mr-auto",
+                }
+            ];
+
+            return (
+                <section className="w-full min-h-screen flex flex-col items-center pt-24 md:pt-32 px-6 md:px-12 fade-in pb-24" data-name="untitled">
+                    <div className="w-full max-w-6xl">
+                        <h1 className="text-[10px] uppercase tracking-widest font-sans-utility text-gray-900 mb-12 text-center md:text-left">
+                            Untitled 2023-
+                        </h1>
+
+                        <div className="flex flex-col gap-16 md:gap-40 w-full">
+                            {images.map((img, index) => (
+                                <div key={index} className="w-full">
+                                    <img 
+                                        src={img.url} 
+                                        alt={img.title}
+                                        className={`h-auto object-cover grayscale hover:grayscale-0 transition-all duration-700 ease-in-out block ${img.className}`}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        function About({ isOpen, onClose }) {
+            const [shouldRender, setShouldRender] = React.useState(false);
+
+            React.useEffect(() => {
+                if (isOpen) {
+                    setShouldRender(true);
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    const timer = setTimeout(() => setShouldRender(false), 500); // Wait for animation
+                    document.body.style.overflow = 'unset';
+                    return () => clearTimeout(timer);
+                }
+            }, [isOpen]);
+
+            if (!shouldRender) return null;
+
+            return (
+                <div className="fixed inset-0 z-50 flex justify-end" data-name="about-overlay">
+                    {/* Backdrop - clicking closes the overlay */}
+                    <div 
+                        className={`absolute inset-0 bg-black/5 transition-opacity duration-500 ease-in-out ${isOpen ? 'opacity-100' : 'opacity-0'}`}
+                        onClick={onClose}
+                    ></div>
+
+                    {/* Content Box - Right Half */}
+                    <div 
+                        className={`relative w-full md:w-1/2 h-full bg-white shadow-xl overflow-y-auto transform transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}
+                        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside content
+                    >
+                        <div className="p-6 md:p-12 lg:p-16 min-h-full">
+                            <button 
+                                onClick={onClose}
+                                className="absolute top-6 right-6 md:top-12 md:right-12 p-2 hover:bg-gray-100 rounded-full transition-colors"
+                                aria-label="Close"
+                            >
+                                <div className="icon-x text-xl text-gray-500"></div>
+                            </button>
+
+                            <div className="max-w-xl mx-auto mt-12 md:mt-24 fade-in">
+                                <div className="space-y-6 text-xs leading-loose text-[var(--text-color)] font-sans-utility">
+                                    <p>
+                                        My introduction to photography stems from my family’s deep roots in the medium. My grandfather worked at Kodak from the age of nineteen, and my parents often recount how they first met while working together in a photo lab darkroom. In many ways, it could be said that my passion for photography is something I inherited through my family.
+                                    </p>
+                                    <p>
+                                        I use photography as a means of understanding. As a result, the conception of my ideas often stems from subjects that I hold a personal interest in or that carry significance within my own life. Across several projects, I have documented my family, using the medium to explore the personal connections I share with them and the stories embedded within my ancestry. Through this work, recurring themes emerge surrounding the deconstruction of time, the shifting temporal nature of memory, and the way life transforms as it moves through time.
+                                    </p>
+                                    <p>
+                                        Photography also functions as a way for me to comprehend and interpret the world around me. Through the use of recurring thematic qualities, I create work that explores the spiritual presence of my subjects and the deeper connections that exist between place, memory, and identity.
+                                    </p>
+                                </div>
+                                
+                                <div className="mt-16 mb-12">
+                                    <img 
+                                        src="https://app.trickle.so/storage/public/images/usr_1cb8c89340000001/a70d0d27-493a-4c47-927b-e5d6aaa64078.jpeg" 
+                                        alt="Portrait" 
+                                        className="w-full h-auto grayscale opacity-90"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        function Contact() {
+            return (
+                <section className="w-full px-6 md:px-12 py-12 max-w-3xl mx-auto fade-in min-h-[60vh] flex flex-col justify-center" data-name="contact">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+                        <div>
+                            <h2 className="text-3xl md:text-4xl mb-8">Get in touch</h2>
+                            <p className="text-lg mb-8 leading-relaxed text-[var(--muted-color)]">
+                                Available for commissions and editorial assignments worldwide. Prints available upon request.
+                            </p>
+                            
+                            <div className="space-y-1">
+                                <a href="mailto:studio@gabrielwilliams.com" className="block text-xl hover:text-[var(--muted-color)] transition-colors">studio@gabrielwilliams.com</a>
+                                <p className="text-xl">+1 (503) 555-0192</p>
+                            </div>
+                        </div>
+                        
+                        <div className="flex flex-col justify-end space-y-4">
+                            <h3 className="font-sans-utility text-xs uppercase tracking-widest text-[var(--muted-color)]">Social</h3>
+                            <a href="#" className="block hover:underline">Instagram</a>
+                            <a href="#" className="block hover:underline">Twitter / X</a>
+                            <a href="#" className="block hover:underline">Are.na</a>
+                        </div>
+                    </div>
+                    
+                    <div className="mt-24 pt-8 border-t border-gray-200">
+                        <p className="font-sans-utility text-xs text-[var(--muted-color)] uppercase tracking-widest">
+                            &copy; 2026 Gabriel Williams Photography. All rights reserved.
+                        </p>
+                    </div>
+                </section>
+            );
+        }
+    </script>
+
+    <!-- Main App Logic -->
+    <script type="text/babel">
+        // Important: DO NOT remove this `ErrorBoundary` component.
+        class ErrorBoundary extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = { hasError: false, error: null };
+            }
+
+            static getDerivedStateFromError(error) {
+                return { hasError: true, error };
+            }
+
+            componentDidCatch(error, errorInfo) {
+                console.error('ErrorBoundary caught an error:', error, errorInfo.componentStack);
+            }
+
+            render() {
+                if (this.state.hasError) {
+                    return (
+                        <div className="min-h-screen flex items-center justify-center bg-[#fdfbf7]">
+                            <div className="text-center p-8">
+                                <h1 className="text-xl font-serif text-gray-900 mb-4">Something went wrong</h1>
+                                <p className="text-gray-500 mb-6 font-sans-utility text-sm">We're sorry, but something unexpected happened.</p>
+                                <button
+                                    onClick={() => window.location.reload()}
+                                    className="px-6 py-2 border border-black hover:bg-black hover:text-white transition-colors duration-300 font-sans-utility text-xs uppercase tracking-widest"
+                                >
+                                    Reload Page
+                                </button>
+                            </div>
+                        </div>
+                    );
+                }
+
+                return this.props.children;
+            }
+        }
+
+        function App() {
+            try {
+                const [currentView, setView] = React.useState('work');
+                const [isInfoOpen, setIsInfoOpen] = React.useState(false);
+
+                const renderView = () => {
+                    switch(currentView) {
+                        case 'work': return <Gallery />;
+                        case 'untitled': return <Untitled />;
+                        case 'contact': return <Contact />;
+                        default: return <Gallery />;
+                    }
+                };
+
+                return (
+                    <div className="min-h-screen w-full bg-[var(--bg-color)] selection:bg-gray-200 flex flex-col md:flex-row relative overflow-x-hidden" data-name="app" data-file="app.js">
+                        <Header 
+                            currentView={currentView} 
+                            setView={setView} 
+                            isInfoOpen={isInfoOpen} 
+                            setIsInfoOpen={setIsInfoOpen} 
+                        />
+                        <main className="w-full md:pl-64 min-h-screen">
+                            {renderView()}
+                        </main>
+                        <About isOpen={isInfoOpen} onClose={() => setIsInfoOpen(false)} />
+                    </div>
+                );
+            } catch (error) {
+                console.error('App component error:', error);
+                return null;
+            }
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(
+            <ErrorBoundary>
+                <App />
+            </ErrorBoundary>
+        );
+    </script>
+</body>
+</html>
